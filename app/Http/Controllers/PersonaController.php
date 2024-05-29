@@ -28,14 +28,25 @@ class PersonaController extends Controller
             'evento_id' => 'required|exists:eventos,id', // Assicurati che l'ID dell'evento sia richiesto e valido
         ]);
 
-        $persona = new Persona();
-        $persona->nome = $request->input('nome');
-        $persona->cognome = $request->input('cognome');
-        $persona->evento_id = $request->input('evento_id'); // Assicurati di includere l'ID dell'evento qui
-        $persona->save();
+        // Trova l'evento
+        $evento = Evento::find($request->input('evento_id'));
 
-        return redirect()->route('eventos.index')->with('success', 'Persona creata con successo.');
+        // Verifica se il numero di partecipanti è inferiore a 10
+        if ($evento->personas->count() < 10) {
+            // Se il limite non è stato raggiunto, crea un nuovo partecipante
+            $persona = new Persona();
+            $persona->nome = $request->input('nome');
+            $persona->cognome = $request->input('cognome');
+            $persona->evento_id = $request->input('evento_id');
+            $persona->save();
+
+            return redirect()->route('eventos.index')->with('success', 'Persona creata con successo.');
+        } else {
+            // Se il limite è stato raggiunto, mostra un messaggio di errore e reindirizza alla pagina di creazione
+            return redirect()->route('eventos.index')->with('error', 'Limite massimo di partecipanti raggiunto. Contattare l\'organizzatore.');
+        }
     }
+
 
 
     public function show(Persona $persona)

@@ -26,6 +26,7 @@ Route::resource('personas', PersonaController::class);
 Route::post('eventos/{evento}/register', [PersonaController::class, 'store'])->name('eventos.register');
 Route::post('personas', [PersonaController::class, 'store'])->name('personas.store');
 
+
 // Home page
 Route::get('/', [EventoController::class, 'index']);
 

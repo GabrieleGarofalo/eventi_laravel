@@ -30,27 +30,38 @@
             <textarea name="descrizione" id="descrizione" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:border-blue-500">{{ $evento->descrizione }}</textarea>
         </div>
 
-        <h2 class="text-xl font-bold mb-2">Partecipanti:</h2>
+        <h2 class="text-xl font-bold mb-2">Partecipanti ({{ $evento->personas->count() }}):</h2>
         @if($evento->personas && $evento->personas->count() > 0)
-            <ul class="mb-4">
+            <ul class="mb-4 bg-gray-100 p-4 rounded-lg">
                 @foreach ($evento->personas as $persona)
-                    <li class="mb-2">{{ $persona->nome }} {{ $persona->cognome }}</li>
+                    <li class="flex justify-between items-center mb-2">
+                        <span>{{ $persona->nome }} {{ $persona->cognome }}</span>
+                        <form action="{{ route('personas.destroy', $persona->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Elimina</button>
+                        </form>
+                    </li>
                 @endforeach
             </ul>
         @else
             <p class="text-gray-700 mb-4">Nessun partecipante registrato.</p>
         @endif
 
-        <h2 class="text-xl font-bold mb-2">Aggiungi partecipante:</h2>
-        <div class="mb-4">
-            <label for="persona_nome" class="block text-gray-700 text-sm font-bold mb-2">Nome:</label>
-            <input type="text" name="persona_nome" id="persona_nome" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
+        @if($evento->personas->count() < 10)
+            <h2 class="text-xl font-bold mb-2">Aggiungi partecipante:</h2>
+            <div class="mb-4">
+                <label for="persona_nome" class="block text-gray-700 text-sm font-bold mb-2">Nome:</label>
+                <input type="text" name="persona_nome" id="persona_nome" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
 
-        <div class="mb-4">
-            <label for="persona_cognome" class="block text-gray-700 text-sm font-bold mb-2">Cognome:</label>
-            <input type="text" name="persona_cognome" id="persona_cognome" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
+            <div class="mb-4">
+                <label for="persona_cognome" class="block text-gray-700 text-sm font-bold mb-2">Cognome:</label>
+                <input type="text" name="persona_cognome" id="persona_cognome" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+        @else
+            <p class="text-red-500 font-semibold">Limite massimo di partecipanti raggiunto. Contattare l'organizzatore.</p>
+        @endif
 
         <div class="flex items-center justify-between">
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Aggiorna Evento</button>
