@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('cognome');
-            $table->foreignId('evento_id')->nullable()->constrained('eventos')->onDelete('set null');
+            $table->foreignId('evento_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

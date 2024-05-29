@@ -13,6 +13,6 @@ class Persona extends Model
 
     public function evento()
     {
-        return $this->belongsTo(Evento::class);
+        return $this->belongsTo(Evento::class, 'evento_id');
     }
 }
