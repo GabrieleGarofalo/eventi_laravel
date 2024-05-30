@@ -49,39 +49,45 @@ class EventoController extends Controller
         return view('eventos.show', compact('evento'));
     }
 
-    public function edit(Evento $evento)
-    {
-        return view('eventos.edit', compact('evento'));
+    public function edit($id)
+{
+    $evento = Evento::findOrFail($id);
+    return view('eventos.edit', compact('evento'));
+}
+public function update(Request $request, $id)
+{
+    $evento = Evento::findOrFail($id);
+
+
+    if (!$evento) {
+        return redirect()->back()->with('error', 'Evento non trovato.');
     }
 
-    public function update(Request $request, Evento $evento)
-    {
-        $request->validate([
-            'nome' => 'required',
-            'data' => 'required|date',
-            'descrizione' => 'required',
-            'immagine' => 'nullable|image|max:2048', // Valida l'immagine
-        ]);
+    $request->validate([
+        'nome' => 'required',
+        'data' => 'required|date',
+        'descrizione' => 'required',
+        'immagine' => 'nullable|image|max:2048', // Valida l'immagine
+    ]);
 
-        $evento->nome = $request->input('nome');
-        $evento->data = $request->input('data');
-        $evento->descrizione = $request->descrizione;
+    $evento->nome = $request->input('nome');
+    $evento->data = $request->input('data');
+    $evento->descrizione = $request->input('descrizione');
 
-
-        if ($request->hasFile('immagine')) {
-            // Elimina l'immagine precedente se esiste
-            if ($evento->immagine) {
-                Storage::disk('public')->delete($evento->immagine);
-            }
-
-            $evento->immagine = $request->file('immagine')->store('immagini', 'public');
+    if ($request->hasFile('immagine')) {
+        // Elimina l'immagine precedente se esiste
+        if ($evento->immagine) {
+            Storage::disk('public')->delete($evento->immagine);
         }
 
-        $evento->save();
-
-
-        return redirect()->route('eventos.show', $evento->id)->with('success', 'Evento aggiornato con successo.');
+        $evento->immagine = $request->file('immagine')->store('immagini', 'public');
     }
+
+    $evento->save();
+
+    return redirect()->route('eventos.show', $evento->id)->with('success', 'Evento aggiornato con successo.');
+}
+
 
     public function destroy(Evento $evento)
     {
