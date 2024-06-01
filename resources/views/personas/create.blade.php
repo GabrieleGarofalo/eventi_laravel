@@ -6,7 +6,7 @@
     @if (session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <strong class="font-bold">Errore:</strong>
-            <span class="block sm:inline">{{ session('error') }}</span>>
+            <span class="block sm:inline">{{ session('error') }}</span>
         </div>
     @endif
     <form action="{{ route('personas.store') }}" method="POST" class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
