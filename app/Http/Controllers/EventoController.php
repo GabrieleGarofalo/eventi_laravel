@@ -89,11 +89,18 @@ public function update(Request $request, $id)
 }
 
 
-    public function destroy(Evento $evento)
-    {
-        $evento->delete();
-        return redirect()->route('eventos.index')->with('success', 'Evento eliminato con successo.');
+public function destroy(Evento $evento)
+{
+    // Elimina i record correlati nella tabella personas
+    foreach ($evento->personas as $persona) {
+        $persona->delete();
     }
+
+    // Ora elimina l'evento
+    $evento->delete();
+
+    return redirect()->route('eventos.index')->with('success', 'Evento eliminato con successo.');
+}
 
     // Mostra il form di registrazione per un evento
     public function RegisterForm(Evento $evento)
