@@ -9,16 +9,10 @@ class Evento extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nome',
-         'data',
-         'descrizione',
-         'immagine',
-
-    ];
+    protected $fillable = ['nome', 'data', 'descrizione', 'immagine'];
 
     public function personas()
     {
-        return $this->hasMany(Persona::class, 'evento_id');
+        return $this->hasMany(Persona::class);
     }
 }

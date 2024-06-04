@@ -32,4 +32,4 @@ Route::prefix('personas')->group(function () {
 // Home page
 Route::get('/', [EventoController::class, 'index']);
 
-
+Route::delete('/personas/{id}', [PersonaController::class, 'destroy'])->name('personas.destroy');

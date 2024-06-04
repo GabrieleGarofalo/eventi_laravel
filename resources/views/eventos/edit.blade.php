@@ -71,41 +71,41 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.delete-persona');
+ document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.delete-persona');
 
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                const personaId = this.getAttribute('data-persona-id');
-                const url = this.closest('form').action;
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const personaId = this.getAttribute('data-persona-id');
+            const url = this.closest('form').action;
 
-                if (confirm('Sei sicuro di voler eliminare questa persona?')) {
-                    fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            document.getElementById('persona-' + personaId).remove();
-                            updateParticipantCount();
-                            alert('Persona eliminata con successo.');
-                        } else {
-                            alert('Errore durante l\'eliminazione della persona.');
-                        }
-                    });
-                }
-            });
+            if (confirm('Sei sicuro di voler eliminare questa persona?')) {
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        document.getElementById('persona-' + personaId).remove();
+                        updateParticipantCount();
+                        alert('Persona eliminata con successo.');
+                    } else {
+                        alert('Errore durante l\'eliminazione della persona.');
+                    }
+                });
+            }
         });
-
-        function updateParticipantCount() {
-            const participantCountElement = document.getElementById('participant-count');
-            const currentCount = parseInt(participantCountElement.textContent, 10);
-            participantCountElement.textContent = currentCount - 1;
-        }
     });
+
+    function updateParticipantCount() {
+        const participantCountElement = document.getElementById('participant-count');
+        const currentCount = parseInt(participantCountElement.textContent, 10);
+        participantCountElement.textContent = currentCount - 1;
+    }
+});
 </script>
 
 @endsection
