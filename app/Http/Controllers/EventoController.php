@@ -45,9 +45,10 @@ class EventoController extends Controller
 
     public function show(Evento $evento)
     {
-        $evento = Evento::with('personas')->find($evento->id);
+        $evento = Evento::with('personas')->findOrFail($evento->id);
         return view('eventos.show', compact('evento'));
     }
+
 
     public function edit($id)
 {

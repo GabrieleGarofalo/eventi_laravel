@@ -100,12 +100,10 @@ class PersonaController extends Controller
         return redirect()->route('personas.index')->with('success', 'Persona aggiornata con successo.');
     }
 
-    public function destroy($id)
-{
-    $persona = Persona::findOrFail($id);
-    $persona->delete();
-
-
-}
+    public function destroy(Persona $persona)
+    {
+        $persona->delete();
+        return redirect()->back()->with('success', 'Persona eliminata con successo.');
+    }
 
 }

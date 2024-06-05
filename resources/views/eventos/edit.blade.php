@@ -37,11 +37,12 @@
             @foreach ($evento->personas as $persona)
                 <li class="flex justify-between items-center mb-2" id="persona-{{ $persona->id }}">
                     <span>{{ $persona->nome }} {{ $persona->cognome }}</span>
-                    <form action="{{ route('personas.destroy', $persona->id) }}" method="POST" class="inline delete-persona-form">
+                    <form action="{{ route('personas.destroy', $persona->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded focus:outline-none focus:shadow-outline delete-persona" data-persona-id="{{ $persona->id }}">Elimina</button>
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Elimina Persona</button>
                     </form>
+
                 </li>
             @endforeach
         </ul>
